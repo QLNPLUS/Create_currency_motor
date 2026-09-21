@@ -130,7 +130,7 @@ public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity
             return;
         }
 
-        double amount = Math.abs(configuredSpeed) * CurrencyMotorConfig.currencyPerRpm();
+        long amount = (long) Math.ceil(Math.abs(configuredSpeed) * CurrencyMotorConfig.currencyPerRpm());
         MinecraftServer server = level.getServer();
         boolean paid = server != null && QShopCurrencyBridge.withdraw(
                 server, owner.getId(), CurrencyMotorConfig.currencyId(), amount, worldPosition);

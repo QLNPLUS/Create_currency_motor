@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public final class CurrencyMotorConfig {
 
     public static final ModConfigSpec SPEC;
-    private static final ModConfigSpec.DoubleValue CURRENCY_PER_RPM;
+    private static final ModConfigSpec.LongValue CURRENCY_PER_RPM;
     private static final ModConfigSpec.DoubleValue MAX_STRESS;
     private static final ModConfigSpec.IntValue CHARGE_INTERVAL_TICKS;
     private static final ModConfigSpec.ConfigValue<String> CURRENCY_ID;
@@ -17,8 +17,8 @@ public final class CurrencyMotorConfig {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         builder.comment("Currency Motor server settings").push(CurrencyMotorMod.MOD_ID);
         CURRENCY_PER_RPM = builder
-                .comment("Q-shop currency charged per RPM each time the payment interval elapses.")
-                .defineInRange("currency_per_rpm", 0.01D, 0.0D, 1.0E12D);
+                .comment("Whole Q-shop currency units charged per RPM each time the payment interval elapses.")
+                .defineInRange("currency_per_rpm", 1L, 1L, 1_000_000_000_000L);
         MAX_STRESS = builder
                 .comment("Stress capacity provided at the maximum speed of 256 RPM.")
                 .defineInRange("max_stress", 16384.0D, 0.0D, 1.0E12D);
@@ -39,7 +39,7 @@ public final class CurrencyMotorConfig {
         modContainer.registerConfig(ModConfig.Type.COMMON, SPEC);
     }
 
-    public static double currencyPerRpm() {
+    public static long currencyPerRpm() {
         return CURRENCY_PER_RPM.get();
     }
 

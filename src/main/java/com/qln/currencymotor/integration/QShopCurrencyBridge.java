@@ -21,15 +21,15 @@ public final class QShopCurrencyBridge {
     }
 
     public static boolean withdraw(MinecraftServer server, UUID owner, String currencyId,
-                                   double amount, BlockPos sourcePos) {
-        if (amount <= 0.0D) {
+                                   long amount, BlockPos sourcePos) {
+        if (amount <= 0L) {
             return true;
         }
         if (!lookup()) {
             return false;
         }
         try {
-            return (boolean) withdrawMethod.invoke(service, server, owner, currencyId, amount,
+            return (boolean) withdrawMethod.invoke(service, server, owner, currencyId, (double) amount,
                     SOURCE, sourcePos, false);
         } catch (IllegalAccessException | InvocationTargetException | RuntimeException exception) {
             CurrencyMotorMod.LOGGER.error("Unable to withdraw Q-shop currency for Currency Motor", exception);
