@@ -38,7 +38,9 @@ public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<Curr
         }
         poseStack.pushPose();
         motor.getOwnerSlot().transform(motor.getLevel(), motor.getBlockPos(), motor.getBlockState(), poseStack);
-        poseStack.scale(1.01F, 1.01F, 1.01F);
+        // Keep the avatar's face aligned to the 4x4-pixel slot, but halve its depth so it
+        // reads as an inset portrait instead of a full head sticking out of the casing.
+        poseStack.scale(1.01F, 1.01F, 0.5F);
         // The slot transform puts the origin on the slot surface with -Z pointing away from
         // the block. The mirrored skull model spans 0..0.5 on Y and -0.25..0.25 on Z, so it
         // is shifted down to centre it and pushed out until its back face rests on the slot.

@@ -7,7 +7,7 @@ Supported targets:
 - Forge 1.20.1
 - NeoForge 1.21.1
 
-The block uses a Void Motor-inspired model and owner avatar slot. Configure the per-RPM charge, maximum stress at 256 RPM, charge interval, and Q-shop currency id in `config/create_currency_motor-common.toml`.
+The block uses a Void Motor-inspired model and owner avatar slot. Configure the per-RPM charge, maximum stress at 256 RPM, charge interval, and Q-shop currency id in `config/create_currency_motor-common.toml`. The per-RPM charge accepts decimals from `0.1` to `1000000000000`; each payment is rounded up to a whole currency unit.
 
 The extracted, editable Void Motor assets are included in the source tree:
 
