@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.component.ResolvableProfile;
 
 public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<CurrencyMotorBlockEntity> {
 
@@ -46,11 +47,11 @@ public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<Curr
 
     private static void renderSkull(GameProfile owner, PoseStack poseStack, MultiBufferSource buffer,
                                     int packedLight, SkullModelBase model) {
-        RenderType renderType = SkullBlockRenderer.getRenderType(SkullBlock.Types.PLAYER, owner);
+        RenderType renderType = SkullBlockRenderer.getRenderType(
+                SkullBlock.Types.PLAYER, new ResolvableProfile(owner));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         VertexConsumer consumer = buffer.getBuffer(renderType);
-        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     @Override

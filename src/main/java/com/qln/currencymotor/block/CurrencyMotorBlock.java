@@ -1,7 +1,6 @@
 package com.qln.currencymotor.block;
 
 import com.qln.currencymotor.CurrencyMotorMod;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -9,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -64,9 +62,9 @@ public final class CurrencyMotorBlock extends DirectionalKineticBlock implements
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hit) {
-        if (player.isShiftKeyDown() || player.isSpectator() || AllItems.WRENCH.isIn(player.getItemInHand(hand))) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+                                               BlockHitResult hit) {
+        if (player.isShiftKeyDown() || player.isSpectator()) {
             return InteractionResult.PASS;
         }
         if (!(level.getBlockEntity(pos) instanceof CurrencyMotorBlockEntity motor)

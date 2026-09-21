@@ -1,20 +1,20 @@
 package com.qln.currencymotor.config;
 
 import com.qln.currencymotor.CurrencyMotorMod;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class CurrencyMotorConfig {
 
-    public static final ForgeConfigSpec SPEC;
-    private static final ForgeConfigSpec.DoubleValue CURRENCY_PER_RPM;
-    private static final ForgeConfigSpec.DoubleValue MAX_STRESS;
-    private static final ForgeConfigSpec.IntValue CHARGE_INTERVAL_TICKS;
-    private static final ForgeConfigSpec.ConfigValue<String> CURRENCY_ID;
+    public static final ModConfigSpec SPEC;
+    private static final ModConfigSpec.DoubleValue CURRENCY_PER_RPM;
+    private static final ModConfigSpec.DoubleValue MAX_STRESS;
+    private static final ModConfigSpec.IntValue CHARGE_INTERVAL_TICKS;
+    private static final ModConfigSpec.ConfigValue<String> CURRENCY_ID;
 
     static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         builder.comment("Currency Motor server settings").push(CurrencyMotorMod.MOD_ID);
         CURRENCY_PER_RPM = builder
                 .comment("Q-shop currency charged per RPM each time the payment interval elapses.")
@@ -35,8 +35,8 @@ public final class CurrencyMotorConfig {
     private CurrencyMotorConfig() {
     }
 
-    public static void register() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SPEC);
+    public static void register(ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.SERVER, SPEC);
     }
 
     public static double currencyPerRpm() {

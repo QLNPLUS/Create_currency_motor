@@ -3,8 +3,8 @@ package com.qln.currencymotor.block;
 import com.mojang.authlib.GameProfile;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,19 +22,20 @@ public final class CurrencyMotorOwnerBehaviour extends BlockEntityBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, boolean clientPacket) {
-        super.write(nbt, clientPacket);
+    public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+        super.write(nbt, registries, clientPacket);
         if (owner != null) {
-            CompoundTag ownerTag = new CompoundTag();
-            NbtUtils.writeGameProfile(ownerTag, owner);
-            nbt.put("Owner", ownerTag);
+            nbt.putUUID("OwnerId", owner.getId());
+            nbt.putString("OwnerName", owner.getName());
         }
     }
 
     @Override
-    public void read(CompoundTag nbt, boolean clientPacket) {
-        super.read(nbt, clientPacket);
-        owner = nbt.contains("Owner", 10) ? NbtUtils.readGameProfile(nbt.getCompound("Owner")) : null;
+    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(nbt, registries, clientPacket);
+        owner = nbt.hasUUID("OwnerId")
+                ? new GameProfile(nbt.getUUID("OwnerId"), nbt.getString("OwnerName"))
+                : null;
     }
 
     @Nullable
