@@ -54,8 +54,7 @@ public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<Curr
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         VertexConsumer consumer = buffer.getBuffer(renderType);
         model.setupAnim(0.0F, 0.0F, 0.0F);
-        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     @Override
