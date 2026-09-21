@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 public final class OwnerSlotTransform extends ValueBoxTransform {
 
-    private static final Vec3 HORIZONTAL = VecHelper.voxelSpace(8.0F, 5.5F, -0.001F);
+    private static final Vec3 HORIZONTAL = VecHelper.voxelSpace(8.0F, 8.0F, -0.001F);
     private static final Vec3 VERTICAL = new Vec3(HORIZONTAL.y, HORIZONTAL.z, HORIZONTAL.x);
 
     @Override
