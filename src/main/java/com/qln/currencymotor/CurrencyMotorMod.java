@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(CurrencyMotorMod.MOD_ID)
 public final class CurrencyMotorMod {
 
-    public static final String MOD_ID = "currency_motor";
+    public static final String MOD_ID = "create_currency_motor";
     public static final int MAX_SPEED = 256;
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 

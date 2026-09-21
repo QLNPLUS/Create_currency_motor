@@ -8,14 +8,17 @@ import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -40,8 +43,8 @@ public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity
         ownerBehaviour = new CurrencyMotorOwnerBehaviour(this);
         behaviours.add(ownerBehaviour);
 
-        generatedSpeed = new KineticScrollValueBehaviour(
-                CreateLang.translateDirect("kinetics.currency_motor.rotation_speed"), this, new MotorValueBox());
+        generatedSpeed = new CurrencyMotorSpeedBehaviour(
+                CreateLang.translateDirect("kinetics.create_currency_motor.rotation_speed"), this, new MotorValueBox());
         generatedSpeed.between(-CurrencyMotorMod.MAX_SPEED, CurrencyMotorMod.MAX_SPEED);
         generatedSpeed.value = DEFAULT_SPEED;
         generatedSpeed.withCallback(value -> updateGeneratedRotation());
@@ -137,6 +140,26 @@ public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity
         if (paymentActive != paid) {
             paymentActive = paid;
             updateGeneratedRotation();
+        }
+    }
+
+    private static final class CurrencyMotorSpeedBehaviour extends KineticScrollValueBehaviour {
+
+        private CurrencyMotorSpeedBehaviour(Component label, CurrencyMotorBlockEntity blockEntity,
+                                            ValueBoxTransform slotPositioning) {
+            super(label, blockEntity, slotPositioning);
+        }
+
+        @Override
+        public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
+            ValueSettingsBoard board = super.createBoard(player, hitResult);
+            long cost = (long) Math.ceil(Math.abs(getValue()) * (double) CurrencyMotorConfig.currencyPerRpm());
+            Component title = board.title().copy()
+                    .append(Component.literal("  "))
+                    .append(Component.translatable("gui.create_currency_motor.current_cost",
+                            Long.toString(cost), CurrencyMotorConfig.currencyId()));
+            return new ValueSettingsBoard(title, board.maxValue(), board.milestoneInterval(),
+                    board.rows(), board.formatter());
         }
     }
 

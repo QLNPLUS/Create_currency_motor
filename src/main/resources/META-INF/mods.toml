@@ -4,34 +4,34 @@ license="MIT"
 issueTrackerURL="https://github.com/QLNPLUS/Create_currency_motor/issues"
 
 [[mods]]
-modId="currency_motor"
+modId="create_currency_motor"
 version="${version}"
-displayName="Currency Motor"
+displayName="Create Currency Motor"
 authors="QLN"
 description='''A Create generator powered by a player's Q-shop currency.'''
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="forge"
 mandatory=true
 versionRange="[47.1,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.20.1,1.21)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="create"
 mandatory=true
 versionRange="[0.5.0,)"
 ordering="AFTER"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="qshop"
 mandatory=true
 versionRange="[1.8.1,)"

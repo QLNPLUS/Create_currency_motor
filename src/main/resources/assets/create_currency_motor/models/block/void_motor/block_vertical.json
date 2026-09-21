@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"3": "currency_motor:block/void_slots",
-		"5": "currency_motor:block/void_motor_casing",
-		"6": "currency_motor:block/void_motor",
-		"particle": "currency_motor:block/void_motor_casing",
+		"3": "create_currency_motor:block/void_slots",
+		"5": "create_currency_motor:block/void_motor_casing",
+		"6": "create_currency_motor:block/void_motor",
+		"particle": "create_currency_motor:block/void_motor_casing",
 		"1_0": "create:block/axis"
 	},
 	"elements": [
