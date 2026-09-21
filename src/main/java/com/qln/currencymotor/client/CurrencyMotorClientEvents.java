@@ -2,8 +2,11 @@ package com.qln.currencymotor.client;
 
 import com.qln.currencymotor.CurrencyMotorMod;
 import com.qln.currencymotor.block.CurrencyMotorBlockEntity;
+import com.qln.currencymotor.config.CurrencyMotorConfig;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsScreen;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.api.distmarker.Dist;
@@ -16,13 +19,16 @@ public final class CurrencyMotorClientEvents {
 
     private static final ResourceLocation COST_BACKGROUND =
             ResourceLocation.fromNamespaceAndPath(CurrencyMotorMod.MOD_ID, "textures/gui/currency_motor_cost.png");
+    private static final int COST_BACKGROUND_WIDTH = 224;
+    private static final int COST_BACKGROUND_HEIGHT = 24;
+    private static final float COST_OVERLAY_Z = 300.0F;
 
     private CurrencyMotorClientEvents() {
     }
 
     @SubscribeEvent
-    public static void renderCostBackground(ScreenEvent.Render.Pre event) {
-        if (!(event.getScreen() instanceof ValueSettingsScreen)) {
+    public static void renderCostOverlay(ScreenEvent.Render.Post event) {
+        if (!(event.getScreen() instanceof ValueSettingsScreen screen)) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
@@ -31,9 +37,25 @@ public final class CurrencyMotorClientEvents {
             return;
         }
 
-        int width = 256;
-        int left = (event.getScreen().width - width) / 2;
-        int top = event.getScreen().height / 2 - 43;
-        event.getGuiGraphics().blit(COST_BACKGROUND, left, top, 0, 0, 0, width, 16, width, 16);
+        ValueSettingsBehaviour.ValueSettings hovered =
+                screen.getClosestCoordinate(event.getMouseX(), event.getMouseY());
+        long cost = CurrencyMotorBlockEntity.calculateCharge(hovered.value());
+        Component title = Component.translatable("kinetics.create_currency_motor.rotation_speed")
+                .append(Component.literal("  "))
+                .append(Component.translatable("gui.create_currency_motor.current_cost",
+                        Long.toString(cost), CurrencyMotorConfig.currencyId()));
+
+        int guiTop = Math.round(screen.getCoordinateOfValue(0, 0).y - 5.0F);
+        int left = (screen.width - COST_BACKGROUND_WIDTH) / 2;
+        int top = guiTop - COST_BACKGROUND_HEIGHT - 2;
+
+        event.getGuiGraphics().pose().pushPose();
+        event.getGuiGraphics().pose().translate(0.0F, 0.0F, COST_OVERLAY_Z);
+        event.getGuiGraphics().blit(COST_BACKGROUND, left, top, 0, 0, 0,
+                COST_BACKGROUND_WIDTH, COST_BACKGROUND_HEIGHT, COST_BACKGROUND_WIDTH, COST_BACKGROUND_HEIGHT);
+        event.getGuiGraphics().drawCenteredString(minecraft.font, title, screen.width / 2, guiTop - 14,
+                0xFFFFFFFF);
+        event.getGuiGraphics().flush();
+        event.getGuiGraphics().pose().popPose();
     }
 }
