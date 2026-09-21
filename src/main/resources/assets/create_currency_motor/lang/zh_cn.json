@@ -1,5 +1,6 @@
 {
   "block.create_currency_motor.currency_motor": "Create 货币马达",
   "kinetics.create_currency_motor.rotation_speed": "转速",
-  "gui.create_currency_motor.current_cost": "当前花费：每次结算 %s %s"
+  "gui.create_currency_motor.current_cost": "%s %s / %s",
+  "gui.create_currency_motor.charge_interval": "%s秒"
 }
