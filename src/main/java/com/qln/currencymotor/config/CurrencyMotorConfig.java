@@ -36,7 +36,7 @@ public final class CurrencyMotorConfig {
     }
 
     public static void register(ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.SERVER, SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, SPEC);
     }
 
     public static double currencyPerRpm() {
