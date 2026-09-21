@@ -1,0 +1,17 @@
+.gradle/
+build/
+run/
+out/
+eclipse/
+/.idea/
+*.iml
+mcmodsrepo/
+src/generated/
+logs/
+crash-reports/
+local-mods/
+*.ipr
+*.iws
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
