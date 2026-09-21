@@ -40,7 +40,9 @@ public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<Curr
         poseStack.pushPose();
         motor.getOwnerSlot().transform(motor.getLevel(), motor.getBlockPos(), motor.getBlockState(), poseStack);
         poseStack.scale(1.01F, 1.01F, 1.01F);
-        poseStack.translate(0.0F, -0.25F, 0.0F);
+        // The imported model places the owner slot at the face center. The skull model
+        // is anchored at its lower edge, so center it and move it in front of the slot.
+        poseStack.translate(0.0F, 0.25F, -0.5F);
         renderSkull(owner, poseStack, buffer, light, skullModel);
         poseStack.popPose();
     }
@@ -51,7 +53,9 @@ public final class CurrencyMotorRenderer extends KineticBlockEntityRenderer<Curr
                 SkullBlock.Types.PLAYER, new ResolvableProfile(owner));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         VertexConsumer consumer = buffer.getBuffer(renderType);
-        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
+        model.setupAnim(0.0F, 0.0F, 0.0F);
+        model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY,
+                1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Override
