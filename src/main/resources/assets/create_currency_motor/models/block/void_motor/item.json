@@ -149,35 +149,9 @@
 			}
 		},
 		{
-			"name": "freq1",
-			"from": [3.5, 8.5, -0.5],
-			"to": [7.5, 12.5, 0.5],
-			"faces": {
-				"north": {"uv": [4, 0, 8, 4], "texture": "#8"},
-				"east": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"south": {"uv": [4, 0, 8, 4], "texture": "#8"},
-				"west": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"up": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"down": {"uv": [4, 4, 8, 4.975], "texture": "#8"}
-			}
-		},
-		{
-			"name": "freq2",
-			"from": [8.5, 8.5, -0.5],
-			"to": [12.5, 12.5, 0.5],
-			"faces": {
-				"north": {"uv": [4, 0, 8, 4], "texture": "#8"},
-				"east": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"south": {"uv": [4, 0, 8, 4], "texture": "#8"},
-				"west": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"up": {"uv": [4, 4, 8, 5], "texture": "#8"},
-				"down": {"uv": [4, 4, 8, 5], "texture": "#8"}
-			}
-		},
-		{
 			"name": "owner",
-			"from": [6, 3.5, -0.5],
-			"to": [10, 7.5, 0.5],
+			"from": [6, 6, -0.5],
+			"to": [10, 10, 0.5],
 			"faces": {
 				"north": {"uv": [0, 0, 4, 4], "texture": "#8"},
 				"east": {"uv": [0, 4, 4, 5], "texture": "#8"},
@@ -203,14 +177,12 @@
 			"name": "shaft",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"nbt": "{}",
 			"children": [0]
 		},
 		{
 			"name": "block",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"nbt": "{}",
 			"children": [
 				1,
 				2,
@@ -226,7 +198,6 @@
 					"name": "shaft",
 					"origin": [8, 8, 8],
 					"color": 0,
-					"nbt": "{}",
 					"children": []
 				}
 			]
@@ -235,8 +206,7 @@
 			"name": "slots",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"nbt": "{}",
-			"children": [11, 12, 13]
+			"children": [11]
 		}
 	]
 }
