@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["E", "C", "S"],
+  "key": {
+    "E": { "item": "minecraft:ender_eye" },
+    "C": { "item": "create:andesite_casing" },
+    "S": { "item": "create:shaft" }
+  },
+  "result": {
+    "item": "currency_motor:currency_motor",
+    "count": 1
+  }
+}
