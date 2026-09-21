@@ -21,6 +21,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity {
@@ -150,7 +152,10 @@ public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity
     }
 
     public static long calculateCharge(float configuredSpeed) {
-        return (long) Math.ceil(Math.abs(configuredSpeed) * (double) CurrencyMotorConfig.currencyPerRpm());
+        return BigDecimal.valueOf(Math.abs((double) configuredSpeed))
+                .multiply(BigDecimal.valueOf(CurrencyMotorConfig.currencyPerRpm()))
+                .setScale(0, RoundingMode.CEILING)
+                .longValueExact();
     }
 
     private static final class CurrencyMotorSpeedBehaviour extends KineticScrollValueBehaviour {
