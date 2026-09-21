@@ -16,6 +16,8 @@ public final class QShopCurrencyBridge {
     private static Method withdrawMethod;
     private static Object service;
     private static boolean lookupAttempted;
+    private static Method displayNameMethod;
+    private static boolean displayNameLookupAttempted;
 
     private QShopCurrencyBridge() {
     }
@@ -37,6 +39,21 @@ public final class QShopCurrencyBridge {
         }
     }
 
+    public static String displayName(String currencyId) {
+        if (currencyId == null || currencyId.isBlank()) {
+            return "";
+        }
+        if (!lookupDisplayName()) {
+            return currencyId;
+        }
+        try {
+            Object value = displayNameMethod.invoke(null, currencyId);
+            return value instanceof String name && !name.isBlank() ? name : currencyId;
+        } catch (IllegalAccessException | InvocationTargetException | RuntimeException exception) {
+            return currencyId;
+        }
+    }
+
     private static boolean lookup() {
         if (lookupAttempted) {
             return withdrawMethod != null;
@@ -50,6 +67,20 @@ public final class QShopCurrencyBridge {
             return true;
         } catch (ReflectiveOperationException | RuntimeException exception) {
             CurrencyMotorMod.LOGGER.error("Q-shop CurrencyService API was not found", exception);
+            return false;
+        }
+    }
+
+    private static boolean lookupDisplayName() {
+        if (displayNameLookupAttempted) {
+            return displayNameMethod != null;
+        }
+        displayNameLookupAttempted = true;
+        try {
+            Class<?> registryClass = Class.forName("com.qshop.currency.CurrencyRegistry");
+            displayNameMethod = registryClass.getMethod("displayName", String.class);
+            return true;
+        } catch (ReflectiveOperationException | RuntimeException exception) {
             return false;
         }
     }
