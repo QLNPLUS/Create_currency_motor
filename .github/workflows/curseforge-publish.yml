@@ -1,0 +1,235 @@
+name: Publish CurseForge
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Publish all targets or retry one loader target
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - forge-1.20.1
+          - neoforge-1.21.1
+      version:
+        description: Mod version for a manual publish when no tag is supplied
+        required: true
+        default: 0.1.0
+        type: string
+      tag:
+        description: Optional exact tag to check out, for example v0.1.0-forge-1.20.1
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: curseforge-${{ github.repository }}-${{ github.event.release.tag_name || inputs.tag || inputs.version || github.ref_name }}-${{ inputs.target || 'release' }}
+  cancel-in-progress: false
+
+jobs:
+  publish-forge-1-20-1:
+    name: Forge 1.20.1
+    if: >-
+      (github.event_name == 'release' && endsWith(github.event.release.tag_name, '-forge-1.20.1'))
+      || (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'forge-1.20.1'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Forge source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || (inputs.tag != '' && inputs.tag || 'forge-1.20.1') }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Validate CurseForge configuration
+        env:
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        shell: bash
+        run: |
+          test -n "$CURSEFORGE_PROJECT_ID" || { echo "::error::CURSEFORGE_PROJECT_ID is not configured."; exit 1; }
+          test -n "$CURSEFORGE_TOKEN" || { echo "::error::CURSEFORGE_TOKEN is not configured."; exit 1; }
+
+      - name: Resolve release version
+        id: release_version
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
+          MANUAL_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          if [ -n "$RELEASE_TAG" ]; then
+            version="${RELEASE_TAG#v}"
+            version="${version%-forge-1.20.1}"
+          else
+            version="$MANUAL_VERSION"
+          fi
+          if [[ ! "$version" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then
+            echo "::error::Invalid mod version: $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build Forge 1.20.1
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon
+
+      - name: Verify Forge artifact and changelog
+        env:
+          VERSION: ${{ steps.release_version.outputs.version }}
+        shell: bash
+        run: |
+          expected="create-currency-motor-forge-1.20.1-${VERSION}.jar"
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print
+          test -f "build/libs/$expected" || {
+            echo "::error::Expected build/libs/$expected was not produced."
+            exit 1
+          }
+          awk -v version="$VERSION" '
+            /^##[[:space:]]+/ {
+              heading = $2
+              gsub(/^\[/, "", heading)
+              gsub(/\].*$/, "", heading)
+              if (found && heading != version) exit
+              if (heading == version) found = 1
+            }
+            found { print }
+            END { if (!found) exit 1 }
+          ' CHANGELOG.md > build/curseforge-changelog.md
+          test -s build/curseforge-changelog.md || {
+            echo "::error::CHANGELOG.md has no section for $VERSION."
+            exit 1
+          }
+
+      - name: Publish Forge 1.20.1
+        uses: Kira-NT/mc-publish@v3
+        with:
+          curseforge-id: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          files: build/libs/create-currency-motor-forge-1.20.1-${{ steps.release_version.outputs.version }}.jar
+          version: ${{ steps.release_version.outputs.version }}
+          name: create-currency-motor-forge-1.20.1-${{ steps.release_version.outputs.version }}
+          version-type: release
+          changelog-file: build/curseforge-changelog.md
+          loaders: forge
+          game-versions: 1.20.1
+          java: 17
+
+  publish-neoforge-1-21-1:
+    name: NeoForge 1.21.1
+    if: >-
+      (github.event_name == 'release' && endsWith(github.event.release.tag_name, '-neoforge-1.21.1'))
+      || (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'neoforge-1.21.1'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out NeoForge source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || (inputs.tag != '' && inputs.tag || 'neoforge-1.21.1') }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Validate CurseForge configuration
+        env:
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        shell: bash
+        run: |
+          test -n "$CURSEFORGE_PROJECT_ID" || { echo "::error::CURSEFORGE_PROJECT_ID is not configured."; exit 1; }
+          test -n "$CURSEFORGE_TOKEN" || { echo "::error::CURSEFORGE_TOKEN is not configured."; exit 1; }
+
+      - name: Resolve release version
+        id: release_version
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
+          MANUAL_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          if [ -n "$RELEASE_TAG" ]; then
+            version="${RELEASE_TAG#v}"
+            version="${version%-neoforge-1.21.1}"
+          else
+            version="$MANUAL_VERSION"
+          fi
+          if [[ ! "$version" =~ ^[0-9]+(\.[0-9]+)+$ ]]; then
+            echo "::error::Invalid mod version: $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build NeoForge 1.21.1
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon
+
+      - name: Verify NeoForge artifact and changelog
+        env:
+          VERSION: ${{ steps.release_version.outputs.version }}
+        shell: bash
+        run: |
+          expected="create-currency-motor-neoforge-1.21.1-${VERSION}.jar"
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print
+          test -f "build/libs/$expected" || {
+            echo "::error::Expected build/libs/$expected was not produced."
+            exit 1
+          }
+          awk -v version="$VERSION" '
+            /^##[[:space:]]+/ {
+              heading = $2
+              gsub(/^\[/, "", heading)
+              gsub(/\].*$/, "", heading)
+              if (found && heading != version) exit
+              if (heading == version) found = 1
+            }
+            found { print }
+            END { if (!found) exit 1 }
+          ' CHANGELOG.md > build/curseforge-changelog.md
+          test -s build/curseforge-changelog.md || {
+            echo "::error::CHANGELOG.md has no section for $VERSION."
+            exit 1
+          }
+
+      - name: Publish NeoForge 1.21.1
+        uses: Kira-NT/mc-publish@v3
+        with:
+          curseforge-id: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          files: build/libs/create-currency-motor-neoforge-1.21.1-${{ steps.release_version.outputs.version }}.jar
+          version: ${{ steps.release_version.outputs.version }}
+          name: create-currency-motor-neoforge-1.21.1-${{ steps.release_version.outputs.version }}
+          version-type: release
+          changelog-file: build/curseforge-changelog.md
+          loaders: neoforge
+          game-versions: 1.21.1
+          java: 21
+
+
+
+
+
