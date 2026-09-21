@@ -1,6 +1,6 @@
-# Currency Motor
+# Create Currency Motor
 
-Currency Motor adds a Create kinetic generator that consumes the owning player's Q-shop currency while running.
+Create Currency Motor adds a Create kinetic generator that consumes the owning player's Q-shop currency while running.
 
 Supported targets:
 
@@ -11,7 +11,7 @@ The block uses a Void Motor-inspired model and owner avatar slot. Configure the 
 
 The extracted, editable Void Motor assets are included in the source tree:
 
-- `src/main/resources/assets/currency_motor/models/block/void_motor/`
-- `src/main/resources/assets/currency_motor/textures/block/void_motor.png`
-- `src/main/resources/assets/currency_motor/textures/block/void_motor_casing.png`
-- `src/main/resources/assets/currency_motor/textures/block/void_slots.png`
+- `src/main/resources/assets/create_currency_motor/models/block/void_motor/`
+- `src/main/resources/assets/create_currency_motor/textures/block/void_motor.png`
+- `src/main/resources/assets/create_currency_motor/textures/block/void_motor_casing.png`
+- `src/main/resources/assets/create_currency_motor/textures/block/void_slots.png`

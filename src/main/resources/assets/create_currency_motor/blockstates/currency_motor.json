@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "create_currency_motor:block/void_motor/block_vertical", "x": 180 },
+    "facing=up": { "model": "create_currency_motor:block/void_motor/block_vertical" },
+    "facing=north": { "model": "create_currency_motor:block/void_motor/block", "y": 180 },
+    "facing=south": { "model": "create_currency_motor:block/void_motor/block" },
+    "facing=west": { "model": "create_currency_motor:block/void_motor/block", "y": 90 },
+    "facing=east": { "model": "create_currency_motor:block/void_motor/block", "y": 270 }
+  }
+}

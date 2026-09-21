@@ -7,7 +7,7 @@ plugins {
 
 version = '0.1.0'
 group = 'com.qln.currency_motor'
-base { archivesName = 'currency-motor-neoforge-1.21.1' }
+base { archivesName = 'create-currency-motor-neoforge-1.21.1' }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
@@ -30,7 +30,7 @@ neoForge {
     }
 
     mods {
-        currency_motor {
+        create_currency_motor {
             sourceSet sourceSets.main
         }
     }
@@ -56,8 +56,8 @@ tasks.named('processResources').configure {
     def replaceProperties = [
             minecraft_version: '1.21.1',
             neo_version: '21.1.248',
-            mod_id: 'currency_motor',
-            mod_name: 'Currency Motor',
+            mod_id: 'create_currency_motor',
+            mod_name: 'Create Currency Motor',
             mod_license: 'MIT',
             mod_version: project.version,
             mod_authors: 'QLN'
@@ -67,10 +67,10 @@ tasks.named('processResources').configure {
 }
 
 jar {
-    archiveFileName = "currency-motor-neoforge-1.21.1-" + project.version + ".jar"
+    archiveFileName = "create-currency-motor-neoforge-1.21.1-" + project.version + ".jar"
     manifest {
         attributes([
-                'Specification-Title'     : 'currency_motor',
+                'Specification-Title'     : 'create_currency_motor',
                 'Specification-Vendor'    : 'QLN',
                 'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,

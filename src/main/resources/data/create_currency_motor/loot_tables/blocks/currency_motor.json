@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "currency_motor:currency_motor"
+          "name": "create_currency_motor:currency_motor"
         }
       ],
       "conditions": [

@@ -2,11 +2,11 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"4": "currency_motor:block/void_slots",
-		"5": "currency_motor:block/void_motor_casing",
-		"6": "currency_motor:block/void_motor",
+		"4": "create_currency_motor:block/void_slots",
+		"5": "create_currency_motor:block/void_motor_casing",
+		"6": "create_currency_motor:block/void_motor",
 		"7": "create:block/flap_display_front",
-		"particle": "currency_motor:block/void_motor_casing",
+		"particle": "create_currency_motor:block/void_motor_casing",
 		"1_0": "create:block/axis"
 	},
 	"elements": [

@@ -1,0 +1,5 @@
+{
+  "block.create_currency_motor.currency_motor": "Create Currency Motor",
+  "kinetics.create_currency_motor.rotation_speed": "Rotation Speed",
+  "gui.create_currency_motor.current_cost": "Current cost: %s %s / interval"
+}

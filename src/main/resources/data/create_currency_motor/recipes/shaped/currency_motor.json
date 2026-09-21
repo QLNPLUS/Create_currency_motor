@@ -7,7 +7,7 @@
     "S": { "item": "create:shaft" }
   },
   "result": {
-    "item": "currency_motor:currency_motor",
+    "item": "create_currency_motor:currency_motor",
     "count": 1
   }
 }

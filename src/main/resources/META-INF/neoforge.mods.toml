@@ -9,28 +9,28 @@ displayName="${mod_name}"
 authors="${mod_authors}"
 description='''A Create generator powered by a player's Q-shop currency.'''
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="neoforge"
 type="required"
 versionRange="[21.1.248,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="minecraft"
 type="required"
 versionRange="[1.21.1,1.22)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="create"
 type="required"
 versionRange="[6.0.0,)"
 ordering="AFTER"
 side="BOTH"
 
-[[dependencies.currency_motor]]
+[[dependencies.create_currency_motor]]
 modId="qshop"
 type="required"
 versionRange="[1.8.1,)"
