@@ -35,7 +35,13 @@ public final class CurrencyMotorOwnerBehaviour extends BlockEntityBehaviour {
     @Override
     public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(nbt, registries, clientPacket);
-        owner = nbt.contains("Owner", 10) ? readProfile(nbt.getCompound("Owner")) : null;
+        if (nbt.contains("Owner", 10)) {
+            owner = readProfile(nbt.getCompound("Owner"));
+        } else {
+            owner = nbt.hasUUID("OwnerId")
+                    ? new GameProfile(nbt.getUUID("OwnerId"), nbt.getString("OwnerName"))
+                    : null;
+        }
     }
 
     @Nullable
