@@ -60,8 +60,16 @@ dependencies {
     modRuntimeOnly('dev.engine-room.vanillin:vanillin-forge-1.20.1:1.0.0')
 }
 
+tasks.named('processResources').configure {
+    def replaceProperties = [
+            version: project.version
+    ]
+    inputs.properties replaceProperties
+    filesMatching('META-INF/mods.toml') { expand replaceProperties }
+}
+
 jar {
-    archiveFileName = "currency-motor-forge-1.20.1-\${project.version}.jar"
+    archiveFileName = "currency-motor-forge-1.20.1-" + project.version + ".jar"
     manifest {
         attributes([
                 'Specification-Title'     : 'currency_motor',
