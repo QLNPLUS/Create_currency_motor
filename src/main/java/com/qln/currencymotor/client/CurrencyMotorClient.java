@@ -20,6 +20,9 @@ public final class CurrencyMotorClient {
         event.registerBlockEntityRenderer(CurrencyMotorMod.CURRENCY_MOTOR_ENTITY.get(), CurrencyMotorRenderer::new);
         SimpleBlockEntityVisualizer.builder(CurrencyMotorMod.CURRENCY_MOTOR_ENTITY.get())
                 .factory(OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF))
+                // The visual only draws the shaft. The block entity renderer still draws the
+                // owner avatar, so it must not be skipped while visuals are active.
+                .neverSkipVanillaRender()
                 .apply();
     }
 }

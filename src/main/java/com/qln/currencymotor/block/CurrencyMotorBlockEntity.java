@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -119,6 +120,12 @@ public final class CurrencyMotorBlockEntity extends GeneratingKineticBlockEntity
 
     public ValueBoxTransform getOwnerSlot() {
         return ownerSlot;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        // The owner avatar protrudes from the block, so it must not be culled with the block hull.
+        return super.getRenderBoundingBox().inflate(1.0);
     }
 
     private void chargeOwner() {

@@ -58,9 +58,9 @@ public final class CurrencyMotorClientEvents {
         event.getGuiGraphics().pose().translate(0.0F, 0.0F, COST_OVERLAY_Z);
         event.getGuiGraphics().blit(COST_BACKGROUND, left, top, 0, 0, 0,
                 COST_BACKGROUND_WIDTH, COST_BACKGROUND_HEIGHT, COST_BACKGROUND_WIDTH, COST_BACKGROUND_HEIGHT);
-        event.getGuiGraphics().drawCenteredString(minecraft.font, speedLabel, screen.width / 2, top + 5,
+        event.getGuiGraphics().drawCenteredString(minecraft.font, costLabel, screen.width / 2, top + 5,
                 0xFFFFFFFF);
-        event.getGuiGraphics().drawCenteredString(minecraft.font, costLabel, screen.width / 2, top + 18,
+        event.getGuiGraphics().drawCenteredString(minecraft.font, speedLabel, screen.width / 2, top + 18,
                 0xFFFFFFFF);
         event.getGuiGraphics().flush();
         event.getGuiGraphics().pose().popPose();
